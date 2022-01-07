@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE
+.idea
+.vscode
+
+# Unit tests
+.pytest_cache/
+.coverage
+
+# Data
+data/maps/*
+!data/maps/*.example.png

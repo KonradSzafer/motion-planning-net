@@ -13,4 +13,6 @@ __pycache__/
 
 # Data
 data/maps/*
+data/planned_maps/*
 !data/maps/*.example.png
+!data/planned_maps/*.example.png

@@ -16,3 +16,6 @@ data/maps/*
 data/planned_maps/*
 !data/maps/*.example.png
 !data/planned_maps/*.example.png
+
+# Models
+models/*

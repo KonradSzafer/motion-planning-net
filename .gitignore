@@ -12,8 +12,12 @@ __pycache__/
 .coverage
 
 # Data
-data/maps/*
-data/planned_maps/*
+data/train/maps/*
+data/test/maps/*
+data/valid/maps/*
+data/train/planned_maps/*
+data/test/planned_maps/*
+data/valid/planned_maps/*
 !data/maps/*.example.png
 !data/planned_maps/*.example.png
 

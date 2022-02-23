@@ -19,28 +19,37 @@ from utils import get_abs_path
 from a_star import find_path
 
 
-def load_images(path, size):
+def load_images(path):
+    images_path = path + 'maps/'
+    json_path = path + 'planned_maps/'
     data = {}
-    f = []
+    images = []
+    files = []
 
-    for (dirpath, dirnames, filenames) in os.walk(path):
-            f.extend(filenames)
+    for (dirpath, dirnames, filenames) in os.walk(json_path):
+            files.extend(filenames)
             break
 
-    f = sorted(f)
+    for (dirpath, dirnames, filenames) in os.walk(images_path):
+            images.extend(filenames)
+            break
+
+    for file in files:
+        file = file[0:-5] + '.png'
+        if file in images:
+            images.remove(file)
+
+    images = sorted(images)
 
     with Progress() as progress:
-        task = progress.add_task('[yellow]Loading images...', total=size)
+        task = progress.add_task('[yellow]Loading images...', total=len(images))
 
-        for i in range(size):
-            img_path = path + f[i]
+        for i in range(len(images)):
+            img_path = images_path + images[i]
             img = cv2.imread(img_path)
-            data[f[i]] = img
+            data[images[i]] = img
             progress.update(task, advance=1)
 
-    # data = np.array(data)
-    # print(data.shape)
-    # data = np.reshape(data, (-1, 120, 120, 3))
     return data
 
 
@@ -130,7 +139,7 @@ def mark_path_points(oryg_map, oryg_path):
     return map, mark_points
 
 
-def generate_point_paths(dataset, coordinates):
+def generate_point_paths(dataset, coordinates, results_path):
     size = len(dataset)
     maps = []
     paths = {}
@@ -147,6 +156,10 @@ def generate_point_paths(dataset, coordinates):
             maps.append(map)
             paths[key] = points
             print(key)
+
+            with open(results_path + 'planned_maps/' + key[0:-4] + '.json', 'w') as f:
+                json.dump(paths, f)
+
             #cv2_imshow(map)
 
             progress.update(task, advance=1)
@@ -159,15 +172,10 @@ if __name__ == "__main__":
 
     project_path = get_abs_path(0)
 
-    dataset_path = project_path + '/data/train/maps/'
-    results_path = project_path + '/data/train/planned_maps/'
+    dataset_path = project_path + '/data/train/'
     results_filename = 'paths.json'
 
-    samples_count = 400000
-    dataset, coordinates = load_data(dataset_path, samples_count)
+    dataset, coordinates = load_data(dataset_path)
 
-    maps, paths = generate_point_paths(dataset, coordinates)
-
-    with open(results_path + results_filename, 'w') as f:
-        json.dump(paths, f)
+    maps, paths = generate_point_paths(dataset, coordinates, dataset_path)
 

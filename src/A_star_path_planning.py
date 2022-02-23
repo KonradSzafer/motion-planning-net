@@ -88,9 +88,9 @@ def get_coordinates(images):
     return rows
 
 
-def load_data(path, size):
+def load_data(path):
 
-    images = load_images(path, size)
+    images = load_images(path)
     coordinates = get_coordinates(images)
     return images, coordinates
 

@@ -12,7 +12,7 @@ The goal was to create a Neural Planner for 2D maps.
 
 The network structure consists of two main parts. An encoder that encodes map images into obstacle space $X_{obs}$ and the planning network itself.\
 The encoder is part of an autoencoder network that has been trained to return input images. Later on planning network, which is a simple feedfroward network, uses encoded images, start position and goal positon to predict next state of an agent.\
-During online path planning paths delivered by the path planning network are simplified and checked for being valid. If you can't connect two consecutive states without hittting an object then A* replanning algorithm is used for planning a new path between those points.
+During online planning, the paths provided by the Planning Network are simplified and checked for validity. If two consecutive states cannot be connected without encountering an object, then the A* planning algorithm is used to plan a new path between these points.
 
 # **Data**
 
@@ -43,8 +43,8 @@ Solved samples:
 
 # **Code**
 
-To generate dataset first thing you have to do is to generate maps and paths. In order to do this you have to run generate_maps.ipnb file. There you have to specify proper paths for saving data and number of maps and paths you want to genreate for each map. Then you have to plan training paths. For doing so run A_star_path_planning.ipnb. One again you have to set proper paths for reading maps and writing .json files with saved paths./
-Last step is to train the network. Evrything you have to know is contained within motion_planning_network.ipnb file.
+To generate a dataset, first you need to generate maps. To do this, run the generate_maps.ipnb file. Then you have to plan training paths. The next step is to plan the paths for the generated maps. To do so run A_star_path_planning.ipnb.\
+Last step is to train the network, for this use the motion_planning_network.ipnb file.
 
 # **Results**
 

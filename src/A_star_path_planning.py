@@ -142,13 +142,13 @@ def mark_path_points(oryg_map, oryg_path):
 def generate_point_paths(dataset, coordinates, results_path):
     size = len(dataset)
     maps = []
-    paths = {}
 
     with Progress() as progress:
         task = progress.add_task('[yellow]Loading images...', total=size)
 
         i = 0
         for key in dataset:
+            paths = {}
             map = dataset[key]
             coor = coordinates[i]
             map, path = find_path(map, coor)
@@ -173,7 +173,6 @@ if __name__ == "__main__":
     project_path = get_abs_path(0)
 
     dataset_path = project_path + '/data/train/'
-    results_filename = 'paths.json'
 
     dataset, coordinates = load_data(dataset_path)
 

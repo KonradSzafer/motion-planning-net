@@ -16,7 +16,9 @@ During online planning, the paths provided by the Planning Network are simplifie
 
 # **Data**
 
-To train the Neural Planner, 100 diferent environments were generated. For each of this environment 4000 diferent starting and goal points were randomly choosen. It gives a total of 400000 path planning problems.
+The coder was trained on a dedicated dataset consisting of generated maps, each with only one solution.
+
+Unlike the coder, only 100 different environments were generated to train the Neural Planner. For each of this environment 4000 diferent starting and goal points were randomly choosen. It gives a total of 400000 path planning problems.
 
 This element is necessary to focus network learning on the path.
 Each image has a resolution of 120x120px.
@@ -41,6 +43,14 @@ Solved samples:
     <img src="images/map_solved_sample4.png" alt="drawing" width="240"/>
 </p>
 
+Before the image was passed to the Encoder, it was reduced in dimensionality to grayscale:
+
+<p align="center">
+    <img src="images/map_encoder0.png" alt="drawing" width="240"/>
+    <img src="images/map_encoder1.png" alt="drawing" width="240"/>
+    <img src="images/map_encoder2.png" alt="drawing" width="240"/>
+</p>
+
 # **Code**
 
 To generate a dataset, first you need to generate maps. To do this, run the generate_maps.ipnb file. Then you have to plan training paths. The next step is to plan the paths for the generated maps. To do so run A_star_path_planning.ipnb.\
@@ -48,24 +58,24 @@ Last step is to train the network, for this use the motion_planning_network.ipnb
 
 # **Results**
 
-First part was to train encoding part of a network. To do so  Simple autoencoder model was created as suggested in the papier. But because of its simplicity the output results were quite bad. 
+First part was to train encoding part of a network. To do so simple autoencoder model was created, as suggested in the papier. However, due to its simplicity, the output results were quite bad.
 
-Zdjęcia
+<p align="center">
+    <img src="images/encoder_result0.png" alt="drawing" width="240"/>
+    <img src="images/encoder_result1.png" alt="drawing" width="240"/>
+    <img src="images/encoder_result2.png" alt="drawing" width="240"/>
+</p>
 
-To improve them resunet model structure was implemented, which uses residual layers and shortcut connections. Now the results looked a lot better but the encoder output vector was bigger.
+To improve them, the ResUNet model structure was implemented with residual layers and shortcut connections. After this operation, the results returned by the encoder are identical to the input ones, but the output vector of the encoder is larger.
 
-Zdjęcia
+The biggest problem encountered was that the network returning the same result regardless of the map. The cause of this problem was teaching the model with one solution for one map, making the network learn the wrong thing.
+Instead of learning how to predict the points on the map for a given starting point and target, the model learned how to predict the best point on the map (with the least loss) based on the map rather than the points that should be connected.
+The light gray points represent the starting point and goal point, and the dark gray points represent the predicted point.
 
-Next the planning part of a network was trained, and it is the most problematic one. If encoder from resunet was used the network no matter the input, was returning always the same results for predicted points. Always half of the map dimensions.
+<p align="center">
+    <img src="images/result0.png" alt="drawing" width="240"/>
+    <img src="images/result1.png" alt="drawing" width="240"/>
+    <img src="images/result2.png" alt="drawing" width="240"/>
+</p>
 
-Zdjęcia
-
-The problem was too big output vector from resunet encoder. So simpler encoder from autoencoder was used. Now it was a little bit better but still not perfect. The network was outputting different points for different maps but not for different input points on the same map.
-
-Zdjęcia
-
-The problem was that the network was learning the wrong thing. Instead of learning how to predict points on a map for a given start and goal, it was learning how to predict the best (smallest loss) point for a map and was deaf on start and goal change.
-
-The solution to this problem is to generate more data paths for a given map to make the network focus on changing start and goal points and not on a map.
-
-
+The solution to this problem is to generate more paths for a given map so that the network focuses on changing start and goal points rather than the map.

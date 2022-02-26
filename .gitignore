@@ -12,6 +12,7 @@ __pycache__/
 .coverage
 
 # Data
+data/encoder_train/maps/*
 data/train/maps/*
 data/test/maps/*
 data/valid/maps/*

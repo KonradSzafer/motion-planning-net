@@ -172,7 +172,7 @@ if __name__ == "__main__":
 
     project_path = get_abs_path(0)
 
-    dataset_path = project_path + '/data/train/'
+    dataset_path = project_path + '/data/valid/'
 
     dataset, coordinates = load_data(dataset_path)
 

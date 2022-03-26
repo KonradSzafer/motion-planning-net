@@ -12,13 +12,7 @@ __pycache__/
 .coverage
 
 # Data
-data/encoder_train/maps/*
-data/train/maps/*
-data/test/maps/*
-data/valid/maps/*
-data/train/planned_maps/*
-data/test/planned_maps/*
-data/valid/planned_maps/*
+data/*
 !data/maps/*.example.png
 !data/planned_maps/*.example.png
 

@@ -43,7 +43,7 @@ Solved samples:
     <img src="images/map_solved_sample4.png" alt="drawing" width="240"/>
 </p>
 
-Before the image was passed to the Encoder, it was reduced in dimensionality to grayscale:
+Before the image is passed to the Encoder, its dimensionality is reduced to grayscale:
 
 <p align="center">
     <img src="images/map_encoder0.png" alt="drawing" width="240"/>
@@ -53,8 +53,22 @@ Before the image was passed to the Encoder, it was reduced in dimensionality to 
 
 # **Code**
 
-To generate a dataset, first you need to generate maps. To do this, run the generate_maps.ipnb file. Then you have to plan training paths. The next step is to plan the paths for the generated maps. To do so run A_star_path_planning.ipnb.\
-Last step is to train the network, for this use the motion_planning_network.ipnb file.
+To generate a dataset, first you need to generate maps. To do this, run the **generate_maps.ipnb** file. \
+Inside this file you must specify maps count with corresponding solutions count. You can also specify starting map number if there is need for adding new maps to existing dataset.
+
+``` python
+data_settings = {
+    'encoder': (0, 10000, 1),
+    'train': (0, 10, 100),
+    'valid_unknown': (0, 10, 20),
+    'test_unknown':  (0, 10, 20),
+    'valid_known': (100),
+    'test_known':  (100)
+}
+```
+
+The next step is to plan the paths for the generated maps. To do so run **A_star_path_planning.ipnb** file. \
+Last step is to train the network, for this use the **motion_planning_network.ipnb** file.
 
 # **Results**
 

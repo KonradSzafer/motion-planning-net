@@ -61,9 +61,9 @@ Last step is to train the network, for this use the motion_planning_network.ipnb
 First part was to train encoding part of a network. To do so simple autoencoder model was created, as suggested in the papier. However, due to its simplicity, the output results were quite bad.
 
 <p align="center">
-    <img src="images/encoder_result0.png" alt="drawing" width="240"/>
-    <img src="images/encoder_result1.png" alt="drawing" width="240"/>
     <img src="images/encoder_result2.png" alt="drawing" width="240"/>
+    <img src="images/encoder_result1.png" alt="drawing" width="243"/>
+    <img src="images/encoder_result0.png" alt="drawing" width="247"/>
 </p>
 
 To improve them, the ResUNet model structure was implemented with residual layers and shortcut connections. After this operation, the results returned by the encoder are identical to the input ones, but the output vector of the encoder is larger.

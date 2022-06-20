@@ -22,7 +22,7 @@ Unlike the encoder, only 100 different environments were generated to train the 
 This element is necessary to focus network learning on the path.
 Each image has a resolution of 120x120px.
 
-A* algorithm was used for path planning. Points on turns were determined from the generated paths and saved in separate JSON files. To minimize the number of points on the turns, a special heuristic has been implemented to reduce it.
+A* algorithm was used for path planning. Points on turns were determined from the generated paths and saved in separate JSON files. To minimize the number of points on the turns, a special heuristic has been implemented.
 
 Unsolved samples:
 <p align="center">

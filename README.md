@@ -18,12 +18,11 @@ During online planning, the paths provided by the Planning Network are simplifie
 
 The coder was trained on a dedicated dataset consisting of generated maps, each with only one solution.
 
-Unlike the coder, only 100 different environments were generated to train the Neural Planner. For each of this environment 4000 diferent starting and goal points were randomly choosen. It gives a total of 400000 path planning problems.
-
+Unlike the encoder, only 100 different environments were generated to train the Neural Planner. For each of this environment 100 diferent starting and goal points were randomly choosen. It gives a total of 10000 path planning problems.
 This element is necessary to focus network learning on the path.
 Each image has a resolution of 120x120px.
 
-A* algorithm was used for path planning. To minimize the number of turns, special heuristics was implemented.
+A* algorithm was used for path planning. Points on turns were determined from the generated paths and saved in separate JSON files. To minimize the number of points on the turns, a special heuristic has been implemented to reduce it.
 
 Unsolved samples:
 <p align="center">
@@ -43,7 +42,7 @@ Solved samples:
     <img src="images/map_solved_sample4.png" alt="drawing" width="240"/>
 </p>
 
-Before the image is passed to the Encoder, its dimensionality is reduced to grayscale:
+Maps reduced to grayscale, before passing to encoder:
 
 <p align="center">
     <img src="images/map_encoder0.png" alt="drawing" width="240"/>
@@ -51,7 +50,7 @@ Before the image is passed to the Encoder, its dimensionality is reduced to gray
     <img src="images/map_encoder2.png" alt="drawing" width="240"/>
 </p>
 
-# **Code**
+# **Usage**
 
 To generate a dataset, first you need to generate maps. To do this, run the **generate_maps.ipnb** file. \
 Inside this file you must specify maps count with corresponding solutions count. You can also specify starting map number if there is need for adding new maps to existing dataset.
@@ -72,24 +71,34 @@ Last step is to train the network, for this use the **motion_planning_network.ip
 
 # **Results**
 
-First part was to train encoding part of a network. To do so simple autoencoder model was created, as suggested in the papier. However, due to its simplicity, the output results were quite bad.
+## **Encoder**
+
+As described in the paper [1], the maps need to be encoded, and a simple autoencoder was created for this purpose. The image representation in the latient space is a tensor of size 32. \
+The results are presented below:
 
 <p align="center">
     <img src="images/encoder_result2.png" alt="drawing" width="240"/>
-    <img src="images/encoder_result1.png" alt="drawing" width="243"/>
-    <img src="images/encoder_result0.png" alt="drawing" width="247"/>
+    <img src="images/encoder_result1.png" alt="drawing" width="241"/>
+    <img src="images/encoder_result0.png" alt="drawing" width="240"/>
 </p>
 
-To improve them, the ResUNet model structure was implemented with residual layers and shortcut connections. After this operation, the results returned by the encoder are identical to the input ones, but the output vector of the encoder is larger.
+## **Motion Planning Network**
 
-The biggest problem encountered was that the network returning the same result regardless of the map. The cause of this problem was teaching the model with one solution for one map, making the network learn the wrong thing.
-Instead of learning how to predict the points on the map for a given starting point and target, the model learned how to predict the best point on the map (with the least loss) based on the map rather than the points that should be connected.
-The light gray points represent the starting point and goal point, and the dark gray points represent the predicted point.
+The main network has been trained to predict only one point at a time. To plan a full path, it must be called iteratively.
+At this time, the network is still in the training and tuning stage. \
+Latest results:
 
-<p align="center">
-    <img src="images/result0.png" alt="drawing" width="240"/>
-    <img src="images/result1.png" alt="drawing" width="240"/>
-    <img src="images/result2.png" alt="drawing" width="240"/>
-</p>
+<p align="center"> <img src="images/result0.jpg" alt="drawing" width="800"/> </p>
+<p align="center"> <img src="images/result1.jpg" alt="drawing" width="800"/> </p>
+<p align="center"> <img src="images/result2.jpg" alt="drawing" width="800"/> </p>
 
-The solution to this problem is to generate more paths for a given map so that the network focuses on changing start and goal points rather than the map.
+**Color of point** | **Definition**
+--- | ---
+Green | starting point
+Red | goal point
+Orange | oryginal point
+Yellow (connected with the lines) | predicted point
+
+# **References**
+
+[1] [Qureshi, Ahmed H. and Simeonov, Anthony and Bency, Mayur J. and Yip, Michael C. Motion Planning Networks. arXiv preprint arXiv:1806.05767, 2018](https://arxiv.org/pdf/1706.04599.pdf)
